@@ -8,6 +8,9 @@ import {
   LOGIN_ROUTE,
   HOME_ROUTE,
   REGISTER_ROUTE,
+  ACCOUNT_ROUTE,
+  LINKS_ROUTE,
+  POST_ROUTE,
 } from './shared/constants/common'
 import Signin from './screens/Signin'
 import Signup from './screens/Signup'
@@ -15,6 +18,9 @@ import Home from './screens/Home'
 import {useDispatch, useSelector} from 'react-redux'
 import {authSelectors, authActions} from './redux/slices/authSlice'
 import HeaderTabs from './components/HeaderTabs'
+import Account from './screens/Account'
+import Links from './screens/Links'
+import Post from './screens/Post'
 
 const Stack = createNativeStackNavigator()
 
@@ -27,7 +33,6 @@ const RootNavigation = () => {
   useEffect(() => {
     ;(async () => {
       const storedAuth = JSON.parse(await getItem())
-      console.log({storedAuth})
       if (storedAuth?.token && storedAuth?.user) {
         dispatch(authActions.loginSuccess(storedAuth))
       }
@@ -41,11 +46,28 @@ const RootNavigation = () => {
         screenOptions={{headerShown: false}}
       >
         {authenticated ? (
-          <Stack.Screen
-            name={HOME_ROUTE}
-            component={Home}
-            options={{headerShown: true, header: () => <HeaderTabs />}}
-          />
+          <>
+            <Stack.Screen
+              name={HOME_ROUTE}
+              component={Home}
+              options={{headerShown: true, header: () => <HeaderTabs />}}
+            />
+            <Stack.Screen
+              name={ACCOUNT_ROUTE}
+              component={Account}
+              options={{headerShown: true, headerBackTitle: '', title: ''}}
+            />
+            <Stack.Screen
+              name={LINKS_ROUTE}
+              component={Links}
+              options={{headerShown: true, headerBackTitle: '', title: ''}}
+            />
+            <Stack.Screen
+              name={POST_ROUTE}
+              component={Post}
+              options={{headerShown: true, headerBackTitle: '', title: ''}}
+            />
+          </>
         ) : (
           <>
             <Stack.Screen name={LOGIN_ROUTE} component={Signin} />
