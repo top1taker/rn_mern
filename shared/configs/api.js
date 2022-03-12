@@ -1,7 +1,9 @@
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import {API_BACKEND} from '@env'
 import {AUTH_STORAGE} from '../constants/common'
+import {API_URL} from '@env'
+
+console.log({API_URL})
 
 const defaultOptions = {}
 
@@ -14,7 +16,7 @@ export const generateToken = () =>
   })()
 
 function getNotAuthApi(path, options, apiURL) {
-  return axios.get(`${apiURL || API_BACKEND}/${path.replace(/^\//, '')}`, {
+  return axios.get(`${apiURL || API_URL}/${path.replace(/^\//, '')}`, {
     ...defaultOptions,
     ...options,
     headers: {
@@ -24,7 +26,7 @@ function getNotAuthApi(path, options, apiURL) {
 }
 
 function getApi(path, options, apiURL) {
-  return axios.get(`${apiURL || API_BACKEND}/${path.replace(/^\//, '')}`, {
+  return axios.get(`${apiURL || API_URL}/${path.replace(/^\//, '')}`, {
     ...defaultOptions,
     ...options,
     headers: {
@@ -35,7 +37,7 @@ function getApi(path, options, apiURL) {
 }
 
 function postApi(path, data, options = {}) {
-  return axios.post(`${API_BACKEND}/${path.replace(/^\//, '')}`, data, {
+  return axios.post(`${API_URL}/${path.replace(/^\//, '')}`, data, {
     ...defaultOptions,
     ...options,
     headers: {
@@ -46,7 +48,7 @@ function postApi(path, data, options = {}) {
 }
 
 function putApi(path, data, options = {}) {
-  return axios.put(`${API_BACKEND}/${path.replace(/^\//, '')}`, data, {
+  return axios.put(`${API_URL}/${path.replace(/^\//, '')}`, data, {
     ...defaultOptions,
     ...options,
     headers: {
@@ -57,7 +59,7 @@ function putApi(path, data, options = {}) {
 }
 
 function patchApi(path, data, options = {}) {
-  return axios.patch(`${API_BACKEND}/${path.replace(/^\//, '')}`, data, {
+  return axios.patch(`${API_URL}/${path.replace(/^\//, '')}`, data, {
     ...defaultOptions,
     ...options,
     headers: {
@@ -68,7 +70,7 @@ function patchApi(path, data, options = {}) {
 }
 
 function deleteApi(path, options = {}) {
-  return axios.delete(`${API_BACKEND}/${path.replace(/^\//, '')}`, {
+  return axios.delete(`${API_URL}/${path.replace(/^\//, '')}`, {
     ...defaultOptions,
     ...options,
     headers: {

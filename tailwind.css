@@ -19,9 +19,18 @@
   margin-right: auto
 }
 
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem
+}
+
 .mx-3 {
   margin-left: 0.75rem;
   margin-right: 0.75rem
+}
+
+.mt-3 {
+  margin-top: 0.75rem
 }
 
 .mt-2 {
@@ -36,8 +45,16 @@
   margin-bottom: 0.25rem
 }
 
+.h-36 {
+  height: 9rem
+}
+
 .h-12 {
   height: 3rem
+}
+
+.w-36 {
+  width: 9rem
 }
 
 .w-auto {
@@ -68,10 +85,6 @@
   justify-content: space-between
 }
 
-.justify-around {
-  justify-content: space-around
-}
-
 .rounded-full {
   border-radius: 9999px
 }
@@ -85,6 +98,11 @@
   border-color: rgb(156 163 175 / var(--tw-border-opacity))
 }
 
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity))
+}
+
 .bg-orange-400 {
   --tw-bg-opacity: 1;
   background-color: rgb(251 146 60 / var(--tw-bg-opacity))
@@ -93,11 +111,6 @@
 .bg-blue-200 {
   --tw-bg-opacity: 1;
   background-color: rgb(191 219 254 / var(--tw-bg-opacity))
-}
-
-.bg-gray-200 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(229 231 235 / var(--tw-bg-opacity))
 }
 
 .p-3 {
@@ -115,6 +128,15 @@
 
 .text-center {
   text-align: center
+}
+
+.text-\[36px\] {
+  font-size: 36px
+}
+
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem
 }
 
 .text-\[30px\] {
@@ -135,6 +157,16 @@
 
 .italic {
   font-style: italic
+}
+
+.text-black {
+  --tw-text-opacity: 1;
+  color: rgb(0 0 0 / var(--tw-text-opacity))
+}
+
+.text-gray-400 {
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity))
 }
 
 .text-white {
@@ -160,9 +192,4 @@
 .text-blue-600 {
   --tw-text-opacity: 1;
   color: rgb(37 99 235 / var(--tw-text-opacity))
-}
-
-.text-gray-400 {
-  --tw-text-opacity: 1;
-  color: rgb(156 163 175 / var(--tw-text-opacity))
 }
