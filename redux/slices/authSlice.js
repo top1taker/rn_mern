@@ -35,6 +35,17 @@ export const authSlice = createSlice({
     logoutRequest: (state) => {
       state.auth = null
     },
+    uploadImageRequest: (state) => {
+      state.loading = true
+      state.error = null
+    },
+    uploadImageSuccess: (state, {payload}) => {
+      state.loading = false
+    },
+    uploadImageFailed: (state, {payload}) => {
+      state.loading = false
+      state.error = payload || 'Failed to uploadImage'
+    },
   },
 })
 

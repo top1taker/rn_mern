@@ -49,11 +49,11 @@ const Account = ({navigation}) => {
     })
 
     if (!result.cancelled) {
-      setImage(`data:image/jpg;base64,${result.base64}`)
+      const imgURL = `data:image/jpg;base64,${result.base64}`
+      dispatch(authActions.uploadImageRequest({image: 'image'}))
+      setImage(imgURL)
     }
   }
-
-  console.log({image})
 
   useEffect(() => {
     if (error) {
