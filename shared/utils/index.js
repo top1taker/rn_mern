@@ -1,5 +1,4 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import {AUTH_STORAGE} from '../constants/common'
 
 export const storeData = async (key, value) => {
   try {
@@ -19,7 +18,10 @@ export const getData = async (key) => {
   }
 }
 
-export const generateHeaderToken = async () => {
-  const auth = await getData(AUTH_STORAGE)
-  return {headers: {Authorization: `Bearer ${auth?.token}`}}
+export const removeData = async (key) => {
+  try {
+    await AsyncStorage.removeItem(key)
+  } catch (e) {
+    console.log(e.message)
+  }
 }

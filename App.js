@@ -1,6 +1,7 @@
 import {Provider} from 'react-redux'
 import {TailwindProvider} from 'tailwind-rn'
 import {StatusBar} from 'react-native'
+import {NavigationContainer} from '@react-navigation/native'
 
 import store from './redux/store'
 import utilities from './tailwind.json'
@@ -11,7 +12,9 @@ export default function App() {
     <Provider store={store}>
       <TailwindProvider utilities={utilities}>
         <StatusBar />
-        <RootNavigation />
+        <NavigationContainer>
+          <RootNavigation />
+        </NavigationContainer>
       </TailwindProvider>
     </Provider>
   )

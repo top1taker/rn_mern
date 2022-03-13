@@ -8,7 +8,7 @@ import {
   URL_UPLOAD_IMAGE,
 } from '../../shared/constants/endpoints'
 import {AUTH_STORAGE} from '../../shared/constants/common'
-import {storeData, generateHeaderToken} from '../../shared/utils/'
+import {removeData, storeData} from '../../shared/utils/'
 
 function* loginWorker({payload}) {
   try {
@@ -17,6 +17,16 @@ function* loginWorker({payload}) {
     yield put(authActions.loginSuccess(data))
   } catch (error) {
     yield put(authActions.loginFailed(error.response?.data?.error))
+  }
+}
+
+function* logoutWorker({payload}) {
+  try {
+    yield call(() => removeData(AUTH_STORAGE))
+    yield put(authActions.logoutSuccess())
+    payload?.callback()
+  } catch (error) {
+    yield put(authActions.logoutFailed(error.response?.data?.error))
   }
 }
 
@@ -32,10 +42,7 @@ function* registerWorker({payload}) {
 
 function* uploadImageWorker({payload}) {
   try {
-    const headerToken = yield call(() => generateHeaderToken())
-    const {data} = yield call(() =>
-      Api.post(URL_UPLOAD_IMAGE, payload, headerToken)
-    )
+    const {data} = yield call(() => Api.post(URL_UPLOAD_IMAGE, payload))
     yield put(authActions.uploadImageSuccess(data))
   } catch (error) {
     yield put(authActions.uploadImageFailed(error.response?.data?.error))
@@ -45,6 +52,7 @@ function* uploadImageWorker({payload}) {
 export default function* authSaga() {
   yield all([
     yield takeEvery(authActions.loginRequest.type, loginWorker),
+    yield takeEvery(authActions.logoutRequest.type, logoutWorker),
     yield takeEvery(authActions.registerRequest.type, registerWorker),
     yield takeEvery(authActions.uploadImageRequest.type, uploadImageWorker),
   ])

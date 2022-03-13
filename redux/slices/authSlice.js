@@ -33,7 +33,16 @@ export const authSlice = createSlice({
       state.error = payload || 'Failed to register'
     },
     logoutRequest: (state) => {
+      state.loading = true
+      state.error = null
+    },
+    logoutSuccess: (state) => {
+      state.loading = false
       state.auth = null
+    },
+    logoutFailed: (state, {payload}) => {
+      state.loading = false
+      state.error = payload || 'Failed to logout'
     },
     uploadImageRequest: (state) => {
       state.loading = true

@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
-import {NavigationContainer} from '@react-navigation/native'
 import {useAsyncStorage} from '@react-native-async-storage/async-storage'
+import {useNavigation} from '@react-navigation/native'
+import axios from 'axios'
 
 import {
   AUTH_STORAGE,
@@ -25,6 +26,7 @@ import Post from './screens/Post'
 const Stack = createNativeStackNavigator()
 
 const RootNavigation = () => {
+  const navigation = useNavigation()
   const dispatch = useDispatch()
   const {getItem} = useAsyncStorage(AUTH_STORAGE)
   const {auth} = useSelector(authSelectors.selectAll)
@@ -37,45 +39,67 @@ const RootNavigation = () => {
         dispatch(authActions.loginSuccess(storedAuth))
       }
     })()
+
+    axios.interceptors.response.use(
+      function (response) {
+        return response
+      },
+      function (error) {
+        const res = error.response.data
+        if (res.status === 401 && res.message === 'jwt expired') {
+          console.log('need to logout')
+          dispatch(
+            authActions.logoutRequest({
+              callback: () => navigation.navigate(LOGIN_ROUTE),
+            })
+          )
+        }
+        return Promise.reject(error)
+      }
+    )
   }, [])
 
+  useEffect(() => {
+    if (auth?.token) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${auth?.token}`
+    }
+  }, [auth])
+
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName={LOGIN_ROUTE}
-        screenOptions={{headerShown: false}}
-      >
-        {authenticated ? (
-          <>
-            <Stack.Screen
-              name={HOME_ROUTE}
-              component={Home}
-              options={{headerShown: true, header: () => <HeaderTabs />}}
-            />
-            <Stack.Screen
-              name={ACCOUNT_ROUTE}
-              component={Account}
-              options={{headerShown: true, headerBackTitle: '', title: ''}}
-            />
-            <Stack.Screen
-              name={LINKS_ROUTE}
-              component={Links}
-              options={{headerShown: true, headerBackTitle: '', title: ''}}
-            />
-            <Stack.Screen
-              name={POST_ROUTE}
-              component={Post}
-              options={{headerShown: true, headerBackTitle: '', title: ''}}
-            />
-          </>
-        ) : (
-          <>
-            <Stack.Screen name={LOGIN_ROUTE} component={Signin} />
-            <Stack.Screen name={REGISTER_ROUTE} component={Signup} />
-          </>
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Stack.Navigator
+      initialRouteName={LOGIN_ROUTE}
+      screenOptions={{headerShown: false}}
+    >
+      {authenticated ? (
+        <>
+          <Stack.Screen
+            name={HOME_ROUTE}
+            component={Home}
+            options={{headerShown: true, header: () => <HeaderTabs />}}
+          />
+          <Stack.Screen
+            name={ACCOUNT_ROUTE}
+            component={Account}
+            options={{headerShown: true, headerBackTitle: '', title: ''}}
+          />
+          <Stack.Screen
+            name={LINKS_ROUTE}
+            component={Links}
+            options={{headerShown: true, headerBackTitle: '', title: ''}}
+          />
+          <Stack.Screen
+            name={POST_ROUTE}
+            component={Post}
+            options={{headerShown: true, headerBackTitle: '', title: ''}}
+          />
+        </>
+      ) : (
+        <>
+          <Stack.Screen name={LOGIN_ROUTE} component={Signin} />
+          <Stack.Screen name={REGISTER_ROUTE} component={Signup} />
+        </>
+      )}
+    </Stack.Navigator>
   )
 }
 
