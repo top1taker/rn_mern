@@ -5,61 +5,56 @@ import {yupResolver} from '@hookform/resolvers/yup'
 import {useForm} from 'react-hook-form'
 import * as yup from 'yup'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
+import {useAsyncStorage} from '@react-native-async-storage/async-storage'
 
 import InputControl from '../components/InputControl'
+import {authActions, authSelectors} from '../redux/slices/authSlice'
 import {useDispatch, useSelector} from 'react-redux'
-import {
-  authActions,
-  authSelectors,
-  REGISTER_STATUS,
-} from '../redux/slices/authSlice'
 import CustomButton from '../components/CustomButton'
-import {generateCallback} from '../shared/utils'
+import {
+  AUTH_STORAGE,
+  FORGOT_PASSWORD_ROUTE,
+  HOME_ROUTE,
+  LOADING_STATUS,
+} from '../shared/constants/common'
 
-const STATUS = REGISTER_STATUS
-
-const Signup = ({navigation}) => {
+const ForgotPassword = ({navigation}) => {
   const tw = useTailwind()
   const dispatch = useDispatch()
-  const {status, error} = useSelector(authSelectors.selectAll)
+  const {loading, status} = useSelector(authSelectors.selectAll)
 
   const schema = yup.object().shape({
-    name: yup.string().required(),
     email: yup.string().email().required(),
-    password: yup.string().min(6).max(32).required(),
   })
 
   const {handleSubmit, control} = useForm({
-    defaultValues: {name: '', email: '', password: ''},
+    defaultValues: {email: ''},
     resolver: yupResolver(schema),
   })
 
-  const onSubmit = (form) => {
-    dispatch(
-      authActions.registerRequest({form, ...generateCallback('Register')})
-    )
+  const onSubmit = (data) => {
+    dispatch(authActions.loginRequest(data))
   }
 
   return (
     <KeyboardAwareScrollView
       contentContainerStyle={tw('flex-1 justify-center')}
     >
-      <Text style={tw('font-bold text-[30px] text-center')}>Sign Up</Text>
+      <Text style={tw('font-bold text-[30px] text-center my-2')}>
+        Forgot Password
+      </Text>
 
-      <InputControl name='name' control={control} autoCapitalize='words' />
       <InputControl name='email' control={control} />
-      <InputControl name='password' secureTextEntry control={control} />
 
       <CustomButton
         title='Submit'
         onPress={handleSubmit(onSubmit)}
         btnStyle={tw('bg-orange-400')}
-        textStyle={tw('uppercase text-white')}
-        loading={status === STATUS.LOADING}
+        textStyle={tw('text-white uppercase')}
+        loading={status === LOADING_STATUS}
       />
 
       <View style={tw('flex-row items-center justify-center')}>
-        <Text>Already joined? </Text>
         <TouchableOpacity onPress={() => navigation.navigate('Signin')}>
           <Text style={tw('text-blue-400 font-semibold')}>Sign in</Text>
         </TouchableOpacity>
@@ -68,4 +63,4 @@ const Signup = ({navigation}) => {
   )
 }
 
-export default Signup
+export default ForgotPassword

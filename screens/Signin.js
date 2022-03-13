@@ -5,18 +5,24 @@ import {yupResolver} from '@hookform/resolvers/yup'
 import {useForm} from 'react-hook-form'
 import * as yup from 'yup'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
-import {useAsyncStorage} from '@react-native-async-storage/async-storage'
 
 import InputControl from '../components/InputControl'
-import {authActions, authSelectors} from '../redux/slices/authSlice'
+import {
+  authActions,
+  authSelectors,
+  LOGIN_STATUS,
+} from '../redux/slices/authSlice'
 import {useDispatch, useSelector} from 'react-redux'
 import CustomButton from '../components/CustomButton'
-import {AUTH_STORAGE, HOME_ROUTE} from '../shared/constants/common'
+import {FORGOT_PASSWORD_ROUTE} from '../shared/constants/common'
+import {generateCallback} from '../shared/utils'
+
+const STATUS = LOGIN_STATUS
 
 const Signin = ({navigation}) => {
   const tw = useTailwind()
   const dispatch = useDispatch()
-  const {loading, error} = useSelector(authSelectors.selectAll)
+  const {error, status} = useSelector(authSelectors.selectAll)
 
   const schema = yup.object().shape({
     email: yup.string().email().required(),
@@ -28,15 +34,11 @@ const Signin = ({navigation}) => {
     resolver: yupResolver(schema),
   })
 
-  const onSubmit = (data) => {
-    dispatch(authActions.loginRequest(data))
+  const onSubmit = (form) => {
+    dispatch(authActions.loginRequest({form, ...generateCallback('Login')}))
   }
 
-  useEffect(() => {
-    if (error) {
-      alert(error)
-    }
-  }, [error])
+  console.log({status})
 
   return (
     <KeyboardAwareScrollView
@@ -52,7 +54,7 @@ const Signin = ({navigation}) => {
         onPress={handleSubmit(onSubmit)}
         btnStyle={tw('bg-orange-400')}
         textStyle={tw('text-white uppercase')}
-        loading={loading}
+        loading={status === STATUS.LOADING}
       />
 
       <View style={tw('flex-row items-center justify-center')}>
@@ -63,7 +65,9 @@ const Signin = ({navigation}) => {
       </View>
 
       <View style={tw('flex-row items-center justify-center mt-2')}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate(FORGOT_PASSWORD_ROUTE)}
+        >
           <Text style={tw('text-orange-400 font-bold')}>Forgot password?</Text>
         </TouchableOpacity>
       </View>

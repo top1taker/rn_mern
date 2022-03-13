@@ -9,16 +9,24 @@ import * as ImagePicker from 'expo-image-picker'
 import {Avatar} from 'react-native-elements'
 
 import InputControl from '../components/InputControl'
-import {authActions, authSelectors} from '../redux/slices/authSlice'
+import {
+  authActions,
+  authSelectors,
+  CHANGE_PASSWORD_STATUS,
+} from '../redux/slices/authSlice'
 import {useDispatch, useSelector} from 'react-redux'
 import CustomButton from '../components/CustomButton'
 import FooterTabs from '../components/FooterTabs'
+import {ACCOUNT_ROUTE, GENERATE_STATUS} from '../shared/constants/common'
+import {generateCallback} from '../shared/utils'
+
+const STATUS = CHANGE_PASSWORD_STATUS
 
 const Account = ({navigation}) => {
   const tw = useTailwind()
   const dispatch = useDispatch()
   const {
-    loading,
+    status,
     error,
     auth: {user},
   } = useSelector(authSelectors.selectAll)
@@ -32,8 +40,13 @@ const Account = ({navigation}) => {
     resolver: yupResolver(schema),
   })
 
-  const onSubmit = (data) => {
-    dispatch(authActions.changePasswordRequest(data))
+  const onSubmit = (form) => {
+    dispatch(
+      authActions.changePasswordRequest({
+        form,
+        ...generateCallback('Change password'),
+      })
+    )
   }
 
   const handleUpload = async () => {
@@ -51,32 +64,27 @@ const Account = ({navigation}) => {
     }
   }
 
-  useEffect(() => {
-    if (error) {
-      alert(error)
-    }
-  }, [error])
+  console.log({status})
 
   return (
     <SafeAreaView style={tw('flex-1')}>
       <KeyboardAwareScrollView
         contentContainerStyle={tw('flex-1 justify-center')}
       >
-        <TouchableOpacity
+        <View
           style={tw(
-            'w-36 h-36 rounded-full bg-white mx-auto items-center justify-center'
+            'rounded-full bg-white mx-auto items-center justify-center'
           )}
-          onPress={handleUpload}
         >
           <Avatar
-            size={130}
+            size={150}
             rounded
             source={{uri: user?.image?.url}}
             containerStyle={{backgroundColor: 'grey'}}
           >
-            <Avatar.Accessory size={23} />
+            <Avatar.Accessory size={40} onPress={handleUpload} />
           </Avatar>
-        </TouchableOpacity>
+        </View>
 
         <Text style={tw('font-bold text-center mt-3 text-[36px]')}>
           {user?.name}
@@ -93,7 +101,7 @@ const Account = ({navigation}) => {
           onPress={handleSubmit(onSubmit)}
           btnStyle={tw('bg-orange-400')}
           textStyle={tw('text-white uppercase')}
-          loading={loading}
+          loading={status === STATUS.LOADING}
         />
       </KeyboardAwareScrollView>
       <FooterTabs />

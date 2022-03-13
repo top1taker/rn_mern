@@ -11,13 +11,15 @@ import {
 import {AUTH_STORAGE} from '../../shared/constants/common'
 import {removeData, storeData, mergeData} from '../../shared/utils/'
 
-function* loginWorker({payload}) {
+function* loginWorker({payload: {form, onSuccess, onError}}) {
   try {
-    const {data} = yield call(() => Api.post(URL_LOGIN, payload))
+    const {data} = yield call(() => Api.post(URL_LOGIN, form))
     yield call(() => storeData(AUTH_STORAGE, data))
     yield put(authActions.loginSuccess(data))
+    onSuccess?.()
   } catch (error) {
     yield put(authActions.loginFailed(error.response?.data?.error))
+    onError?.()
   }
 }
 
@@ -31,13 +33,15 @@ function* logoutWorker({payload}) {
   }
 }
 
-function* registerWorker({payload}) {
+function* registerWorker({payload: {form, onSuccess, onError}}) {
   try {
-    const {data} = yield call(() => Api.post(URL_REGISTER, payload))
+    const {data} = yield call(() => Api.post(URL_REGISTER, form))
     yield call(() => storeData(AUTH_STORAGE, data))
     yield put(authActions.registerSuccess(data))
+    onSuccess?.()
   } catch (error) {
     yield put(authActions.registerFailed(error.response?.data?.error))
+    onError?.(error.response?.data?.error)
   }
 }
 
@@ -51,12 +55,14 @@ function* uploadImageWorker({payload}) {
   }
 }
 
-function* changePasswordWorker({payload}) {
+function* changePasswordWorker({payload: {form, onError, onSuccess}}) {
   try {
-    const {data} = yield call(() => Api.post(URL_CHANGE_PASSWORD, payload))
+    const {data} = yield call(() => Api.post(URL_CHANGE_PASSWORD, form))
     yield put(authActions.changePasswordSuccess(data))
+    onSuccess?.()
   } catch (error) {
     yield put(authActions.changePasswordFailed(error.response?.data?.error))
+    onError?.()
   }
 }
 

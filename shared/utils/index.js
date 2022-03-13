@@ -34,3 +34,8 @@ export const removeData = async (key) => {
     console.log(e.message)
   }
 }
+
+export const generateCallback = (message) => ({
+  onError: (another) => alert(another || `${message} failed`),
+  onSuccess: (another) => alert(another || `${message} successfully`),
+})

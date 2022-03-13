@@ -80,19 +80,9 @@
 			"marginBottom": 4
 		}
 	},
-	"h-36": {
-		"style": {
-			"height": 144
-		}
-	},
 	"h-12": {
 		"style": {
 			"height": 48
-		}
-	},
-	"w-36": {
-		"style": {
-			"width": 144
 		}
 	},
 	"w-auto": {
@@ -138,6 +128,14 @@
 			"borderTopRightRadius": 9999,
 			"borderBottomRightRadius": 9999,
 			"borderBottomLeftRadius": 9999
+		}
+	},
+	"rounded": {
+		"style": {
+			"borderTopLeftRadius": 4,
+			"borderTopRightRadius": 4,
+			"borderBottomRightRadius": 4,
+			"borderBottomLeftRadius": 4
 		}
 	},
 	"border-b-2": {

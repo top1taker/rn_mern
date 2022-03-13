@@ -12,6 +12,7 @@ import {
   ACCOUNT_ROUTE,
   LINKS_ROUTE,
   POST_ROUTE,
+  FORGOT_PASSWORD_ROUTE,
 } from './shared/constants/common'
 import Signin from './screens/Signin'
 import Signup from './screens/Signup'
@@ -22,6 +23,7 @@ import HeaderTabs from './components/HeaderTabs'
 import Account from './screens/Account'
 import Links from './screens/Links'
 import Post from './screens/Post'
+import ForgotPassword from './screens/ForgotPassword'
 
 const Stack = createNativeStackNavigator()
 
@@ -97,6 +99,10 @@ const RootNavigation = () => {
         <>
           <Stack.Screen name={LOGIN_ROUTE} component={Signin} />
           <Stack.Screen name={REGISTER_ROUTE} component={Signup} />
+          <Stack.Screen
+            name={FORGOT_PASSWORD_ROUTE}
+            component={ForgotPassword}
+          />
         </>
       )}
     </Stack.Navigator>
