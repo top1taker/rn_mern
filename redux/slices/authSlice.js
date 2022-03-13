@@ -50,6 +50,8 @@ export const authSlice = createSlice({
     },
     uploadImageSuccess: (state, {payload}) => {
       state.loading = false
+      const auth = state.auth
+      state.auth = {...auth, ...payload}
     },
     uploadImageFailed: (state, {payload}) => {
       state.loading = false

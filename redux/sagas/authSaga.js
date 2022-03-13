@@ -8,7 +8,7 @@ import {
   URL_UPLOAD_IMAGE,
 } from '../../shared/constants/endpoints'
 import {AUTH_STORAGE} from '../../shared/constants/common'
-import {removeData, storeData} from '../../shared/utils/'
+import {removeData, storeData, mergeData} from '../../shared/utils/'
 
 function* loginWorker({payload}) {
   try {
@@ -43,6 +43,7 @@ function* registerWorker({payload}) {
 function* uploadImageWorker({payload}) {
   try {
     const {data} = yield call(() => Api.post(URL_UPLOAD_IMAGE, payload))
+    yield call(() => mergeData(AUTH_STORAGE, data))
     yield put(authActions.uploadImageSuccess(data))
   } catch (error) {
     yield put(authActions.uploadImageFailed(error.response?.data?.error))

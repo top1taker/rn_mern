@@ -5,21 +5,19 @@ import {yupResolver} from '@hookform/resolvers/yup'
 import {useForm} from 'react-hook-form'
 import * as yup from 'yup'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
-import {useAsyncStorage} from '@react-native-async-storage/async-storage'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import * as ImagePicker from 'expo-image-picker'
+import {Avatar} from 'react-native-elements'
 
 import InputControl from '../components/InputControl'
 import {authActions, authSelectors} from '../redux/slices/authSlice'
 import {useDispatch, useSelector} from 'react-redux'
 import CustomButton from '../components/CustomButton'
-import {AUTH_STORAGE, HOME_ROUTE} from '../shared/constants/common'
 import FooterTabs from '../components/FooterTabs'
 
 const Account = ({navigation}) => {
   const tw = useTailwind()
   const dispatch = useDispatch()
-  const [image, setImage] = useState('')
   const {
     loading,
     error,
@@ -50,8 +48,7 @@ const Account = ({navigation}) => {
 
     if (!result.cancelled) {
       const imgURL = `data:image/jpg;base64,${result.base64}`
-      dispatch(authActions.uploadImageRequest({image: 'image'}))
-      setImage(imgURL)
+      dispatch(authActions.uploadImageRequest({image: imgURL}))
     }
   }
 
@@ -72,14 +69,14 @@ const Account = ({navigation}) => {
           )}
           onPress={handleUpload}
         >
-          {user?.image ? (
-            <Image
-              source={{uri: user?.image?.url}}
-              style={tw('w-36 h-36 rounded-full')}
-            />
-          ) : (
-            <FontAwesome5 name='camera' size={24} color='orange' />
-          )}
+          <Avatar
+            size={130}
+            rounded
+            source={{uri: user?.image?.url}}
+            containerStyle={{backgroundColor: 'grey'}}
+          >
+            <Avatar.Accessory size={23} />
+          </Avatar>
         </TouchableOpacity>
 
         <Text style={tw('font-bold text-center mt-3 text-[36px]')}>
