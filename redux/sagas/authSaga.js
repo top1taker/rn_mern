@@ -3,6 +3,7 @@ import {all, put, takeEvery, call, delay} from 'redux-saga/effects'
 import {authActions} from '../slices/authSlice'
 import Api from '../../shared/configs/api'
 import {
+  URL_CHANGE_PASSWORD,
   URL_LOGIN,
   URL_REGISTER,
   URL_UPLOAD_IMAGE,
@@ -50,11 +51,24 @@ function* uploadImageWorker({payload}) {
   }
 }
 
+function* changePasswordWorker({payload}) {
+  try {
+    const {data} = yield call(() => Api.post(URL_CHANGE_PASSWORD, payload))
+    yield put(authActions.changePasswordSuccess(data))
+  } catch (error) {
+    yield put(authActions.changePasswordFailed(error.response?.data?.error))
+  }
+}
+
 export default function* authSaga() {
   yield all([
     yield takeEvery(authActions.loginRequest.type, loginWorker),
     yield takeEvery(authActions.logoutRequest.type, logoutWorker),
     yield takeEvery(authActions.registerRequest.type, registerWorker),
     yield takeEvery(authActions.uploadImageRequest.type, uploadImageWorker),
+    yield takeEvery(
+      authActions.changePasswordRequest.type,
+      changePasswordWorker
+    ),
   ])
 }

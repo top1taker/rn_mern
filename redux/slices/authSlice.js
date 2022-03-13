@@ -57,6 +57,17 @@ export const authSlice = createSlice({
       state.loading = false
       state.error = payload || 'Failed to uploadImage'
     },
+    changePasswordRequest: (state) => {
+      state.loading = true
+      state.error = null
+    },
+    changePasswordSuccess: (state) => {
+      state.loading = false
+    },
+    changePasswordFailed: (state, {payload}) => {
+      state.loading = false
+      state.error = payload || 'Failed to changePassword'
+    },
   },
 })
 

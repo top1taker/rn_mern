@@ -5,7 +5,6 @@ import {yupResolver} from '@hookform/resolvers/yup'
 import {useForm} from 'react-hook-form'
 import * as yup from 'yup'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import * as ImagePicker from 'expo-image-picker'
 import {Avatar} from 'react-native-elements'
 
@@ -34,7 +33,7 @@ const Account = ({navigation}) => {
   })
 
   const onSubmit = (data) => {
-    alert(data)
+    dispatch(authActions.changePasswordRequest(data))
   }
 
   const handleUpload = async () => {
