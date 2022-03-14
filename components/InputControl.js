@@ -3,7 +3,7 @@ import React from 'react'
 import {useTailwind} from 'tailwind-rn'
 import {useController} from 'react-hook-form'
 
-const InputControl = ({name, control, ...props}) => {
+const InputControl = ({name, control, title, ...props}) => {
   const tw = useTailwind()
 
   const {
@@ -16,7 +16,9 @@ const InputControl = ({name, control, ...props}) => {
 
   return (
     <View style={tw('m-4')}>
-      <Text style={tw('font-bold text-gray-400')}>{name?.toUpperCase()}</Text>
+      <Text style={tw('font-bold text-gray-400')}>
+        {title?.toUpperCase() || name?.toUpperCase()}
+      </Text>
       <TextInput
         style={tw('border-b-2 border-gray-400 h-12')}
         onChangeText={onChange}

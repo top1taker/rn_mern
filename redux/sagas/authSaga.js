@@ -1,12 +1,14 @@
 import {all, put, takeEvery, call, delay} from 'redux-saga/effects'
 
-import {authActions} from '../slices/authSlice'
+import {authActions, FORGOT_PASSWORD_STATUS} from '../slices/authSlice'
 import Api from '../../shared/configs/api'
 import {
   URL_CHANGE_PASSWORD,
   URL_LOGIN,
   URL_REGISTER,
   URL_UPLOAD_IMAGE,
+  URL_FORGOT_PASSWORD,
+  URL_RESET_PASSWORD,
 } from '../../shared/constants/endpoints'
 import {AUTH_STORAGE} from '../../shared/constants/common'
 import {removeData, storeData, mergeData} from '../../shared/utils/'
@@ -66,6 +68,34 @@ function* changePasswordWorker({payload: {form, onError, onSuccess}}) {
   }
 }
 
+function* forgotPasswordWorker({
+  payload: {form, onError, onSuccess, onSideEffect},
+}) {
+  try {
+    const {data} = yield call(() => Api.post(URL_FORGOT_PASSWORD, form))
+    yield put(authActions.forgotPasswordSuccess(data))
+    onSuccess?.()
+    onSideEffect?.()
+  } catch (error) {
+    yield put(authActions.forgotPasswordFailed(error.response?.data?.error))
+    onError?.(error.response?.data?.error)
+  }
+}
+
+function* resetPasswordWorker({
+  payload: {form, onError, onSuccess, onSideEffect},
+}) {
+  try {
+    const {data} = yield call(() => Api.post(URL_RESET_PASSWORD, form))
+    yield put(authActions.resetPasswordSuccess(data))
+    onSuccess?.()
+    onSideEffect?.()
+  } catch (error) {
+    yield put(authActions.resetPasswordFailed(error.response?.data?.error))
+    onError?.(error.response?.data?.error)
+  }
+}
+
 export default function* authSaga() {
   yield all([
     yield takeEvery(authActions.loginRequest.type, loginWorker),
@@ -76,5 +106,10 @@ export default function* authSaga() {
       authActions.changePasswordRequest.type,
       changePasswordWorker
     ),
+    yield takeEvery(
+      authActions.forgotPasswordRequest.type,
+      forgotPasswordWorker
+    ),
+    yield takeEvery(authActions.resetPasswordRequest.type, resetPasswordWorker),
   ])
 }

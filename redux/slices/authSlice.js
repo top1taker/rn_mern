@@ -2,6 +2,7 @@ import {createSlice} from '@reduxjs/toolkit'
 import {
   GENERATE_STATUS,
   LOGIN_ROUTE,
+  FORGOT_PASSWORD_ROUTE,
   REGISTER_ROUTE,
 } from '../../shared/constants/common'
 
@@ -10,6 +11,8 @@ export const REGISTER_STATUS = GENERATE_STATUS(REGISTER_ROUTE)
 export const LOGOUT_STATUS = GENERATE_STATUS('Logout')
 export const UPLOAD_IMAGE_STATUS = GENERATE_STATUS('UploadImage')
 export const CHANGE_PASSWORD_STATUS = GENERATE_STATUS('ChangePassword')
+export const FORGOT_PASSWORD_STATUS = GENERATE_STATUS(FORGOT_PASSWORD_ROUTE)
+export const RESET_PASSWORD_STATUS = GENERATE_STATUS('ResetPassword')
 
 export const authSlice = createSlice({
   name: 'auth',
@@ -78,6 +81,28 @@ export const authSlice = createSlice({
     changePasswordFailed: (state, {payload}) => {
       state.status = CHANGE_PASSWORD_STATUS.FAILED
       state.error = payload || 'Failed to changePassword'
+    },
+    forgotPasswordRequest: (state) => {
+      state.status = FORGOT_PASSWORD_STATUS.LOADING
+      state.error = null
+    },
+    forgotPasswordSuccess: (state) => {
+      state.status = FORGOT_PASSWORD_STATUS.SUCCEEDED
+    },
+    forgotPasswordFailed: (state, {payload}) => {
+      state.status = FORGOT_PASSWORD_STATUS.FAILED
+      state.error = payload || 'Failed to forgotPassword'
+    },
+    resetPasswordRequest: (state) => {
+      state.status = RESET_PASSWORD_STATUS.LOADING
+      state.error = null
+    },
+    resetPasswordSuccess: (state) => {
+      state.status = RESET_PASSWORD_STATUS.SUCCEEDED
+    },
+    resetPasswordFailed: (state, {payload}) => {
+      state.status = RESET_PASSWORD_STATUS.FAILED
+      state.error = payload || 'Failed to resetPassword'
     },
     resetStatus: (state) => {
       state.status = 'idle'

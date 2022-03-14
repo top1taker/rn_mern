@@ -38,8 +38,6 @@ const Signin = ({navigation}) => {
     dispatch(authActions.loginRequest({form, ...generateCallback('Login')}))
   }
 
-  console.log({status})
-
   return (
     <KeyboardAwareScrollView
       contentContainerStyle={tw('flex-1 justify-center')}

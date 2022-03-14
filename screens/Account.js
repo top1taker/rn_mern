@@ -64,8 +64,6 @@ const Account = ({navigation}) => {
     }
   }
 
-  console.log({status})
-
   return (
     <SafeAreaView style={tw('flex-1')}>
       <KeyboardAwareScrollView
