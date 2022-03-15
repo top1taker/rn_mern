@@ -3,7 +3,7 @@ import React from 'react'
 import {useTailwind} from 'tailwind-rn'
 import {useController} from 'react-hook-form'
 
-const InputControl = ({name, control, title, ...props}) => {
+const InputControl = ({name, control, title, handleChange, ...props}) => {
   const tw = useTailwind()
 
   const {
@@ -21,7 +21,10 @@ const InputControl = ({name, control, title, ...props}) => {
       </Text>
       <TextInput
         style={tw('border-b-2 border-gray-400 h-12')}
-        onChangeText={onChange}
+        onChangeText={(text) => {
+          handleChange?.(text)
+          onChange(text)
+        }}
         onBlur={onBlur}
         value={value}
         ref={ref}
