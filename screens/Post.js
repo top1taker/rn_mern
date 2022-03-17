@@ -8,15 +8,25 @@ import ogs from '@uehreka/open-graph-scraper-react-native'
 
 import InputControl from '../components/InputControl'
 import FooterTabs from '../components/FooterTabs'
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import CustomButton from '../components/CustomButton'
 import PreviewCard from '../components/PreviewCard'
+import {
+  linkActions,
+  CREATE_LINK_STATUS,
+  linkSelectors,
+} from '../redux/slices/linkSlice'
+import {generateCallback} from '../shared/utils'
+import {LINKS_ROUTE} from '../shared/constants/common'
 
-const Post = () => {
+const STATUS = CREATE_LINK_STATUS
+
+const Post = ({navigation}) => {
   const tw = useTailwind()
   const refTimeout = useRef()
   const dispatch = useDispatch()
-  const [urlPreview, setUrlPreview] = useState('')
+  const {status} = useSelector(linkSelectors.selectAll)
+  const [urlPreview, setUrlPreview] = useState({})
 
   const schema = yup.object().shape({
     url: yup
@@ -29,10 +39,16 @@ const Post = () => {
     title: yup.string().min(6).max(32).required(),
   })
 
-  const {handleSubmit, control} = useForm({
+  const {handleSubmit, control, reset} = useForm({
     defaultValues: {url: '', title: ''},
     resolver: yupResolver(schema),
   })
+
+  const onSideEffect = () => {
+    navigation.navigate(LINKS_ROUTE)
+    reset()
+    setUrlPreview({})
+  }
 
   const handleChange = (text) => {
     if (refTimeout.current) clearTimeout(refTimeout.current)
@@ -47,11 +63,17 @@ const Post = () => {
           })
         })
         .catch((err) => console.log(err))
-    }, 1500)
+    }, 500)
   }
 
   const onSubmit = (form) => {
-    console.log({form})
+    dispatch(
+      linkActions.createRequest({
+        form: {...form, urlPreview},
+        ...generateCallback('Create link'),
+        onSideEffect,
+      })
+    )
   }
   return (
     <SafeAreaView style={tw('flex-1')}>
@@ -69,7 +91,11 @@ const Post = () => {
             autoCapitalize='sentences'
             placeholder='Enter your title'
           />
-          <CustomButton onPress={handleSubmit(onSubmit)} title='Submit' />
+          <CustomButton
+            onPress={handleSubmit(onSubmit)}
+            title='Submit'
+            loading={status === STATUS.LOADING}
+          />
           {urlPreview?.success && <PreviewCard {...urlPreview} />}
         </ScrollView>
       </View>

@@ -13,6 +13,7 @@ import {
   LINKS_ROUTE,
   POST_ROUTE,
   FORGOT_PASSWORD_ROUTE,
+  LINK_VIEW_ROUTE,
 } from './shared/constants/common'
 import Signin from './screens/Signin'
 import Signup from './screens/Signup'
@@ -24,6 +25,7 @@ import Account from './screens/Account'
 import Links from './screens/Links'
 import Post from './screens/Post'
 import ForgotPassword from './screens/ForgotPassword'
+import LinkView from './screens/LinkView'
 
 const Stack = createNativeStackNavigator()
 
@@ -78,6 +80,11 @@ const RootNavigation = () => {
             name={HOME_ROUTE}
             component={Home}
             options={{headerShown: true, header: () => <HeaderTabs />}}
+          />
+          <Stack.Screen
+            name={LINK_VIEW_ROUTE}
+            component={LinkView}
+            options={{headerShown: true}}
           />
           <Stack.Screen
             name={ACCOUNT_ROUTE}

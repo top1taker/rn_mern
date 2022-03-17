@@ -6,6 +6,7 @@ const PreviewCard = ({
   ogTitle = 'Untitled',
   ogDescription = 'No description ...',
   ogImage = {url: 'https://via.placeholder.com/500x500?text=Image'},
+  handleClick = () => {},
 }) => {
   const tw = useTailwind()
   return (
@@ -22,14 +23,14 @@ const PreviewCard = ({
       ]}
     >
       <Image
-        source={{uri: ogImage?.url}}
+        source={{uri: ogImage?.url || ogImage?.[0]?.url}}
         style={tw('h-36 w-full rounded-xl')}
         resizeMode='cover'
       />
-      <TouchableOpacity style={tw('m-2')}>
+      <TouchableOpacity style={tw('m-2')} onPress={handleClick}>
         <Text style={tw('text-xl')}>{ogTitle}</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={tw('mx-2')}>
+      <TouchableOpacity style={tw('mx-2')} onPress={handleClick}>
         <Text style={tw('text-gray-500')}>{ogDescription}</Text>
       </TouchableOpacity>
     </View>
