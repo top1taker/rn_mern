@@ -11,25 +11,33 @@ import {LINK_VIEW_ROUTE} from '../shared/constants/common'
 
 const Home = ({navigation}) => {
   const dispatch = useDispatch()
-  const {list} = useSelector(linkSelectors.selectAll)
+  const list = useSelector(linkSelectors.selectAll)
   const tw = useTailwind()
 
   useEffect(() => {
     dispatch(linkActions.listRequest())
   }, [])
 
+  console.log({list})
+
+  const handlePress = (link) => {
+    navigation.navigate(LINK_VIEW_ROUTE, {
+      link: link?.urlPreview?.ogUrl,
+    })
+    dispatch(linkActions.viewCountRequest({linkId: link.id}))
+  }
+
   return (
     <SafeAreaView style={tw('flex-1')}>
       <ScrollView style={tw('flex-1')}>
         {list.map((link) => (
           <PreviewCard
-            key={link._id}
+            key={link.id}
             {...link.urlPreview}
-            handleClick={() =>
-              navigation.navigate(LINK_VIEW_ROUTE, {
-                link: link?.urlPreview?.ogUrl,
-              })
-            }
+            views={link.views}
+            likes={link.likes}
+            handleClick={() => handlePress(link)}
+            showIcons
           />
         ))}
       </ScrollView>

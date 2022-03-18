@@ -17,7 +17,7 @@ import {
   linkSelectors,
 } from '../redux/slices/linkSlice'
 import {generateCallback} from '../shared/utils'
-import {LINKS_ROUTE} from '../shared/constants/common'
+import {HOME_ROUTE, LINKS_ROUTE} from '../shared/constants/common'
 
 const STATUS = CREATE_LINK_STATUS
 
@@ -25,7 +25,7 @@ const Post = ({navigation}) => {
   const tw = useTailwind()
   const refTimeout = useRef()
   const dispatch = useDispatch()
-  const {status} = useSelector(linkSelectors.selectAll)
+  const {status} = useSelector((state) => state.link.status)
   const [urlPreview, setUrlPreview] = useState({})
 
   const schema = yup.object().shape({
@@ -45,7 +45,7 @@ const Post = ({navigation}) => {
   })
 
   const onSideEffect = () => {
-    navigation.navigate(LINKS_ROUTE)
+    navigation.navigate(HOME_ROUTE)
     reset()
     setUrlPreview({})
   }

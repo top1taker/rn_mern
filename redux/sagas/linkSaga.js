@@ -2,7 +2,7 @@ import {all, put, takeEvery, call, delay} from 'redux-saga/effects'
 
 import {linkActions} from '../slices/linkSlice'
 import Api from '../../shared/configs/api'
-import {URL_LINK} from '../../shared/constants/endpoints'
+import {URL_LINK, URL_VIEW_COUNT} from '../../shared/constants/endpoints'
 
 function* createWorker({payload: {form, onSuccess, onError, onSideEffect}}) {
   try {
@@ -25,9 +25,19 @@ function* listWorker() {
   }
 }
 
+function* viewCountWorker({payload: {linkId}}) {
+  try {
+    const {data} = yield call(() => Api.put(URL_VIEW_COUNT(linkId)))
+    yield put(linkActions.viewCountSuccess(data))
+  } catch (error) {
+    yield put(linkActions.viewCountFailed(error.response?.data?.error))
+  }
+}
+
 export default function* linkSaga() {
   yield all([
     yield takeEvery(linkActions.createRequest.type, createWorker),
     yield takeEvery(linkActions.listRequest.type, listWorker),
+    yield takeEvery(linkActions.viewCountRequest.type, viewCountWorker),
   ])
 }
