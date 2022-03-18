@@ -50,11 +50,6 @@
   margin-right: 0.5rem
 }
 
-.mx-4 {
-  margin-left: 1rem;
-  margin-right: 1rem
-}
-
 .mt-3 {
   margin-top: 0.75rem
 }
@@ -93,6 +88,10 @@
 
 .flex-row {
   flex-direction: row
+}
+
+.items-end {
+  align-items: flex-end
 }
 
 .items-center {
@@ -233,17 +232,12 @@
   color: rgb(37 99 235 / var(--tw-text-opacity))
 }
 
-.text-gray-500 {
-  --tw-text-opacity: 1;
-  color: rgb(107 114 128 / var(--tw-text-opacity))
-}
-
-.text-orange-300 {
-  --tw-text-opacity: 1;
-  color: rgb(253 186 116 / var(--tw-text-opacity))
-}
-
 .text-orange-500 {
   --tw-text-opacity: 1;
   color: rgb(249 115 22 / var(--tw-text-opacity))
+}
+
+.text-gray-500 {
+  --tw-text-opacity: 1;
+  color: rgb(107 114 128 / var(--tw-text-opacity))
 }

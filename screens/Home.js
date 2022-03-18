@@ -12,19 +12,28 @@ import {LINK_VIEW_ROUTE} from '../shared/constants/common'
 const Home = ({navigation}) => {
   const dispatch = useDispatch()
   const list = useSelector(linkSelectors.selectAll)
+  const {auth} = useSelector(authSelectors.selectAll)
   const tw = useTailwind()
 
   useEffect(() => {
     dispatch(linkActions.listRequest())
   }, [])
 
-  console.log({list})
+  const checkIsLiked = (userId) => userId === auth.user._id
 
   const handlePress = (link) => {
     navigation.navigate(LINK_VIEW_ROUTE, {
       link: link?.urlPreview?.ogUrl,
     })
-    dispatch(linkActions.viewCountRequest({linkId: link.id}))
+    dispatch(linkActions.viewCountRequest({linkId: link._id}))
+  }
+
+  const toggleLike = (link) => {
+    if (link.likes.some(checkIsLiked)) {
+      dispatch(linkActions.unlikeRequest({linkId: link._id}))
+    } else {
+      dispatch(linkActions.likeRequest({linkId: link._id}))
+    }
   }
 
   return (
@@ -32,11 +41,13 @@ const Home = ({navigation}) => {
       <ScrollView style={tw('flex-1')}>
         {list.map((link) => (
           <PreviewCard
-            key={link.id}
+            key={link._id}
             {...link.urlPreview}
             views={link.views}
             likes={link.likes}
+            isLiked={link.likes.some(checkIsLiked)}
             handleClick={() => handlePress(link)}
+            toggleLike={() => toggleLike(link)}
             showIcons
           />
         ))}

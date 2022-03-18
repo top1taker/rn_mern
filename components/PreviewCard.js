@@ -1,6 +1,7 @@
 import {TouchableOpacity, View, Text, Image} from 'react-native'
 import React from 'react'
 import {useTailwind} from 'tailwind-rn'
+import Fontisto from 'react-native-vector-icons/Fontisto'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 const PreviewCard = ({
@@ -8,9 +9,11 @@ const PreviewCard = ({
   ogDescription = 'No description ...',
   ogImage = {url: 'https://via.placeholder.com/500x500?text=Image'},
   handleClick = () => {},
+  toggleLike = () => {},
   showIcons = false,
   views = 0,
   likes = [],
+  isLiked,
 }) => {
   const tw = useTailwind()
   return (
@@ -32,14 +35,21 @@ const PreviewCard = ({
         resizeMode='cover'
       />
       {showIcons && (
-        <View style={tw('flex-row absolute top-2 right-2')}>
+        <View style={tw('flex-row items-end absolute top-2 right-2')}>
           <View style={tw('items-center')}>
             <FontAwesome5 name='eye' size={20} color='#ff9900' />
             <Text style={tw('text-orange-500')}>{views}</Text>
           </View>
 
-          <TouchableOpacity style={tw('items-center mx-3')}>
-            <FontAwesome5 name='heart' size={20} color='#ff9900' />
+          <TouchableOpacity
+            style={tw('items-center mx-3')}
+            onPress={toggleLike}
+          >
+            <Fontisto
+              name={isLiked ? 'heart' : 'heart-alt'}
+              size={18}
+              color='#ff9900'
+            />
             <Text style={tw('text-orange-500')}>{likes.length}</Text>
           </TouchableOpacity>
         </View>

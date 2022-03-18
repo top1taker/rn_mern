@@ -2,7 +2,12 @@ import {all, put, takeEvery, call, delay} from 'redux-saga/effects'
 
 import {linkActions} from '../slices/linkSlice'
 import Api from '../../shared/configs/api'
-import {URL_LINK, URL_VIEW_COUNT} from '../../shared/constants/endpoints'
+import {
+  URL_LIKE_LINK,
+  URL_LINK,
+  URL_UNLIKE_LINK,
+  URL_VIEW_COUNT,
+} from '../../shared/constants/endpoints'
 
 function* createWorker({payload: {form, onSuccess, onError, onSideEffect}}) {
   try {
@@ -34,10 +39,30 @@ function* viewCountWorker({payload: {linkId}}) {
   }
 }
 
+function* likeWorker({payload: {linkId}}) {
+  try {
+    const {data} = yield call(() => Api.put(URL_LIKE_LINK, {linkId}))
+    yield put(linkActions.likeSuccess(data))
+  } catch (error) {
+    yield put(linkActions.likeFailed(error.response?.data?.error))
+  }
+}
+
+function* unlikeWorker({payload: {linkId}}) {
+  try {
+    const {data} = yield call(() => Api.put(URL_UNLIKE_LINK, {linkId}))
+    yield put(linkActions.unlikeSuccess(data))
+  } catch (error) {
+    yield put(linkActions.unlikeFailed(error.response?.data?.error))
+  }
+}
+
 export default function* linkSaga() {
   yield all([
     yield takeEvery(linkActions.createRequest.type, createWorker),
     yield takeEvery(linkActions.listRequest.type, listWorker),
     yield takeEvery(linkActions.viewCountRequest.type, viewCountWorker),
+    yield takeEvery(linkActions.likeRequest.type, likeWorker),
+    yield takeEvery(linkActions.unlikeRequest.type, unlikeWorker),
   ])
 }
