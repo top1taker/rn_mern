@@ -1,17 +1,31 @@
-import {SafeAreaView, ScrollView, Text, Button} from 'react-native'
+import {
+  SafeAreaView,
+  ScrollView,
+  View,
+  ActivityIndicator,
+  Text,
+  Button,
+} from 'react-native'
 import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {useTailwind} from 'tailwind-rn'
 
 import {authActions, authSelectors} from '../redux/slices/authSlice'
 import FooterTabs from '../components/FooterTabs'
-import {linkActions, linkSelectors} from '../redux/slices/linkSlice'
+import {
+  linkActions,
+  linkSelectors,
+  LIST_LINK_STATUS,
+} from '../redux/slices/linkSlice'
 import PreviewCard from '../components/PreviewCard'
 import {LINK_VIEW_ROUTE, PROFILE_ROUTE} from '../shared/constants/common'
+
+const STATUS = LIST_LINK_STATUS
 
 const Home = ({navigation}) => {
   const dispatch = useDispatch()
   const list = useSelector(linkSelectors.selectAll)
+  const status = useSelector(linkSelectors.selectStatus)
   const {auth} = useSelector(authSelectors.selectAll)
   const tw = useTailwind()
 
@@ -39,6 +53,13 @@ const Home = ({navigation}) => {
   const handleClickUser = (link) => {
     navigation.navigate(PROFILE_ROUTE, {user: link.postedBy})
   }
+
+  if (status === STATUS.LOADING)
+    return (
+      <View style={tw('flex-1 items-center justify-center')}>
+        <ActivityIndicator color='red' />
+      </View>
+    )
 
   return (
     <SafeAreaView style={tw('flex-1')}>

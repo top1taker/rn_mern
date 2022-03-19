@@ -78,7 +78,7 @@ const Account = ({navigation}) => {
             size={150}
             rounded
             source={{uri: user?.image?.url}}
-            containerStyle={{backgroundColor: 'grey'}}
+            containerStyle={tw('bg-white')}
           >
             <Avatar.Accessory size={40} onPress={handleUpload} />
           </Avatar>
