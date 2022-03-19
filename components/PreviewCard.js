@@ -8,8 +8,9 @@ import dayjs from 'dayjs'
 const PreviewCard = ({
   ogTitle = 'Untitled',
   ogDescription = 'No description ...',
-  ogImage = {url: 'https://via.placeholder.com/500x500?text=Image'},
+  ogImage,
   handleClick = () => {},
+  handleClickUser = () => {},
   toggleLike = () => {},
   showIcons = false,
   views = 0,
@@ -33,7 +34,12 @@ const PreviewCard = ({
       ]}
     >
       <Image
-        source={{uri: ogImage?.url || ogImage?.[0]?.url}}
+        source={{
+          uri:
+            ogImage?.url ||
+            ogImage?.[0]?.url ||
+            'https://via.placeholder.com/500x500?text=Image',
+        }}
         style={tw('h-36 w-full rounded-xl')}
         resizeMode='cover'
       />
@@ -43,9 +49,12 @@ const PreviewCard = ({
             'flex-row items-end w-full mx-auto justify-around absolute top-2'
           )}
         >
-          <TouchableOpacity style={tw('items-center')}>
+          <TouchableOpacity
+            style={tw('items-center')}
+            onPress={handleClickUser}
+          >
             <FontAwesome5 name='user' size={20} color='#ff9900' />
-            <Text style={tw('text-orange-500')}>{user}</Text>
+            <Text style={tw('text-orange-500')}>{user?.name}</Text>
           </TouchableOpacity>
 
           <View style={tw('items-center')}>

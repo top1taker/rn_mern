@@ -6,6 +6,7 @@ export const LINK_VIEW_ROUTE = 'LinkView'
 export const ACCOUNT_ROUTE = 'Account'
 export const POST_ROUTE = 'Post'
 export const LINKS_ROUTE = 'Links'
+export const PROFILE_ROUTE = 'Profile'
 
 // AsyncStorage
 export const AUTH_STORAGE = '@auth'

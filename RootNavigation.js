@@ -14,6 +14,7 @@ import {
   POST_ROUTE,
   FORGOT_PASSWORD_ROUTE,
   LINK_VIEW_ROUTE,
+  PROFILE_ROUTE,
 } from './shared/constants/common'
 import Signin from './screens/Signin'
 import Signup from './screens/Signup'
@@ -26,6 +27,7 @@ import Links from './screens/Links'
 import Post from './screens/Post'
 import ForgotPassword from './screens/ForgotPassword'
 import LinkView from './screens/LinkView'
+import Profile from './screens/Profile'
 
 const Stack = createNativeStackNavigator()
 
@@ -99,6 +101,11 @@ const RootNavigation = () => {
           <Stack.Screen
             name={POST_ROUTE}
             component={Post}
+            options={{headerShown: true, headerBackTitle: '', title: ''}}
+          />
+          <Stack.Screen
+            name={PROFILE_ROUTE}
+            component={Profile}
             options={{headerShown: true, headerBackTitle: '', title: ''}}
           />
         </>

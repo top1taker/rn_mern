@@ -7,7 +7,7 @@ import {authActions, authSelectors} from '../redux/slices/authSlice'
 import FooterTabs from '../components/FooterTabs'
 import {linkActions, linkSelectors} from '../redux/slices/linkSlice'
 import PreviewCard from '../components/PreviewCard'
-import {LINK_VIEW_ROUTE} from '../shared/constants/common'
+import {LINK_VIEW_ROUTE, PROFILE_ROUTE} from '../shared/constants/common'
 
 const Home = ({navigation}) => {
   const dispatch = useDispatch()
@@ -36,6 +36,10 @@ const Home = ({navigation}) => {
     }
   }
 
+  const handleClickUser = (link) => {
+    navigation.navigate(PROFILE_ROUTE, {user: link.postedBy})
+  }
+
   return (
     <SafeAreaView style={tw('flex-1')}>
       <ScrollView style={tw('flex-1')}>
@@ -46,10 +50,11 @@ const Home = ({navigation}) => {
             views={link.views}
             likes={link.likes}
             createdAt={link.createdAt}
-            user={link.postedBy?.name}
+            user={link.postedBy}
             isLiked={link.likes.some(checkIsLiked)}
             handleClick={() => handlePress(link)}
             toggleLike={() => toggleLike(link)}
+            handleClickUser={() => handleClickUser(link)}
             showIcons
           />
         ))}
