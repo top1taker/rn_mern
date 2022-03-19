@@ -45,6 +45,8 @@ const Home = ({navigation}) => {
             {...link.urlPreview}
             views={link.views}
             likes={link.likes}
+            createdAt={link.createdAt}
+            user={link.postedBy?.name}
             isLiked={link.likes.some(checkIsLiked)}
             handleClick={() => handlePress(link)}
             toggleLike={() => toggleLike(link)}

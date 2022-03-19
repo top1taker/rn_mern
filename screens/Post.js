@@ -25,8 +25,10 @@ const Post = ({navigation}) => {
   const tw = useTailwind()
   const refTimeout = useRef()
   const dispatch = useDispatch()
-  const {status} = useSelector((state) => state.link.status)
+  const status = useSelector(linkSelectors.selectStatus)
   const [urlPreview, setUrlPreview] = useState({})
+
+  console.log({status})
 
   const schema = yup.object().shape({
     url: yup

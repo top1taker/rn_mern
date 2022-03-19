@@ -3,6 +3,7 @@ import React from 'react'
 import {useTailwind} from 'tailwind-rn'
 import Fontisto from 'react-native-vector-icons/Fontisto'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import dayjs from 'dayjs'
 
 const PreviewCard = ({
   ogTitle = 'Untitled',
@@ -14,6 +15,8 @@ const PreviewCard = ({
   views = 0,
   likes = [],
   isLiked,
+  createdAt,
+  user = '',
 }) => {
   const tw = useTailwind()
   return (
@@ -35,16 +38,29 @@ const PreviewCard = ({
         resizeMode='cover'
       />
       {showIcons && (
-        <View style={tw('flex-row items-end absolute top-2 right-2')}>
+        <View
+          style={tw(
+            'flex-row items-end w-full mx-auto justify-around absolute top-2'
+          )}
+        >
+          <TouchableOpacity style={tw('items-center')}>
+            <FontAwesome5 name='user' size={20} color='#ff9900' />
+            <Text style={tw('text-orange-500')}>{user}</Text>
+          </TouchableOpacity>
+
+          <View style={tw('items-center')}>
+            <FontAwesome5 name='clock' size={20} color='#ff9900' />
+            <Text style={tw('text-orange-500')}>
+              {dayjs(createdAt).format('DD/MM/YYYY')}
+            </Text>
+          </View>
+
           <View style={tw('items-center')}>
             <FontAwesome5 name='eye' size={20} color='#ff9900' />
             <Text style={tw('text-orange-500')}>{views}</Text>
           </View>
 
-          <TouchableOpacity
-            style={tw('items-center mx-3')}
-            onPress={toggleLike}
-          >
+          <TouchableOpacity style={tw('items-center')} onPress={toggleLike}>
             <Fontisto
               name={isLiked ? 'heart' : 'heart-alt'}
               size={18}

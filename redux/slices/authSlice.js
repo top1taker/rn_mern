@@ -6,13 +6,13 @@ import {
   REGISTER_ROUTE,
 } from '../../shared/constants/common'
 
-export const LOGIN_STATUS = GENERATE_STATUS(LOGIN_ROUTE)
-export const REGISTER_STATUS = GENERATE_STATUS(REGISTER_ROUTE)
-export const LOGOUT_STATUS = GENERATE_STATUS('Logout')
-export const UPLOAD_IMAGE_STATUS = GENERATE_STATUS('UploadImage')
-export const CHANGE_PASSWORD_STATUS = GENERATE_STATUS('ChangePassword')
-export const FORGOT_PASSWORD_STATUS = GENERATE_STATUS(FORGOT_PASSWORD_ROUTE)
-export const RESET_PASSWORD_STATUS = GENERATE_STATUS('ResetPassword')
+export const LOGIN_STATUS = GENERATE_STATUS('login')
+export const REGISTER_STATUS = GENERATE_STATUS('register')
+export const LOGOUT_STATUS = GENERATE_STATUS('logout')
+export const UPLOAD_IMAGE_STATUS = GENERATE_STATUS('upload-image')
+export const CHANGE_PASSWORD_STATUS = GENERATE_STATUS('change-password')
+export const FORGOT_PASSWORD_STATUS = GENERATE_STATUS('forgot-password')
+export const RESET_PASSWORD_STATUS = GENERATE_STATUS('reset-password')
 
 export const authSlice = createSlice({
   name: 'auth',

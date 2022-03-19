@@ -1,11 +1,11 @@
 import {createSlice, createEntityAdapter} from '@reduxjs/toolkit'
 import {LINKS_ROUTE, GENERATE_STATUS} from '../../shared/constants/common'
 
-export const CREATE_LINK_STATUS = GENERATE_STATUS(LINKS_ROUTE)
-export const LIST_LINK_STATUS = GENERATE_STATUS('ListLink')
-export const VIEW_COUNT_STATUS = GENERATE_STATUS('ViewCount')
-export const LIKE_LINK_STATUS = GENERATE_STATUS('LikeLink')
-export const UNLIKE_LINK_STATUS = GENERATE_STATUS('UnlikeLink')
+export const CREATE_LINK_STATUS = GENERATE_STATUS('create-link')
+export const LIST_LINK_STATUS = GENERATE_STATUS('list-link')
+export const VIEW_COUNT_STATUS = GENERATE_STATUS('view-count')
+export const LIKE_LINK_STATUS = GENERATE_STATUS('like-link')
+export const UNLIKE_LINK_STATUS = GENERATE_STATUS('unlike-link')
 
 const linksAdapter = createEntityAdapter({
   sortComparer: (a, b) => a.createdAt.localeCompare(b.createdAt) * -1,
@@ -92,6 +92,7 @@ export const linkActions = linkSlice.actions
 
 export const linkSelectors = {
   ...linksAdapter.getSelectors((state) => state.link),
+  selectStatus: (state) => state.link.status,
 }
 
 export default linkSlice.reducer
